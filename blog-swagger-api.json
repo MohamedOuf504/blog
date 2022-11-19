@@ -1,0 +1,195 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "deal app  ",
+        "description": "Task For deal app  "
+    },
+    "tags": [
+        {
+            "name": "User",
+            "description": "User endpoints"
+        },
+        {},
+        {},
+        {}
+    ],
+    "paths": {
+        "/user/signup": {
+			"post": {
+				"tags": ["Users"],
+				"summary": "Signup endpoint",
+				"requestBody": {
+					"description": "user signup data",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									
+									"email": {
+										"type": "string",
+										"example": "john@john.com"
+									},
+									"password": {
+										"type": "string",
+										"example": "john_passowrd"
+									}
+								}
+							},
+							"code": {
+								"type": "string",
+								"example": "The invitation code"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status": {
+											"type": "string",
+											"example": "success"
+										},
+										"statusCode": {
+											"type": "number",
+											"example": 200
+										},
+										"data": {
+											"type": "object",
+											"properties": {
+												
+												"email": {
+													"type": "string",
+													"example": "mark@mark.com"
+												},
+												
+												"id": {
+													"type": "string",
+													"example": "626a8bd6c8f8c416c332a906"
+												},
+												"role": {
+													"type": "string",
+													"example":"user"
+												}
+
+											
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request. email:should be unique.password:should NOT have fewer than 8 characters.password:passwords are not the same"
+					}
+				}
+			}
+		},
+		"/user/login": {
+			"post": {
+				"tags": ["Users"],
+				"summary": "Login endpoint",
+				"requestBody": {
+					"description": "user login data",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"email": {
+										"type": "string",
+										"example": "john@john.com"
+									},
+									"password": {
+										"type": "string",
+										"example": "john_passowrd"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status": {
+											"type": "string",
+											"example": "success"
+										},
+										"token": {
+											"type": "string",
+											"example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDBmODNjOWQzM2UyNGUwOTIwNGJhMCIsImlhdCI6MTYxNzAxNjI0NCwiZXhwIjoxNjI0NzkyMjQ0fQ.gVLc8dDHjdaFniO6njCFQl1yubmN1ISoXKn-dpC7rmE"
+										},
+										"data": {
+											"type": "object",
+											"properties": {
+												"role": {
+													"type": "string",
+													"example": "user"
+												},
+												
+												"email": {
+													"type": "string",
+													"example": "mark@mark.com"
+												},
+												
+												"id": {
+													"type": "string",
+													"example": "626a8bd6c8f8c416c332a906"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request. Incorrect email or password."
+					}
+				}
+			}
+		}
+    },
+    "components": {
+        "schemas": {
+			"User": {
+				"type": "object",
+				"properties": {
+					"role": {
+						"type": "string",
+						"example": "USER"
+					},
+					"email": {
+						"type": "string",
+						"example": "john@john.com"
+					},
+					"password": {
+						"type": "string",
+						"example": "john_passowrd"
+					}
+
+				}
+			}}
+    },
+    "servers": [
+        {
+            "description": "Try it Now ",
+            "url": "http://localhost:3000/api/v1/"
+        }
+    ]
+}
