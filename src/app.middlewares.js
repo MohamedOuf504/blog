@@ -24,6 +24,6 @@ app.use(morgan('dev'));
 -
 app.get('/api/v1/docs',swaggerUi.setup(swaggerDocument));
 
-app.use('/api/v1/', swaggerUi.serve);
+app.use('/', swaggerUi.serve);
 
 module.exports = app;

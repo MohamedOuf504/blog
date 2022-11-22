@@ -13,7 +13,7 @@ let server;
 
 mongoose
 	.connect(databaseURL, {
-		
+	
 	})
 	.then(async () => {
 		console.log('Connected to DB');

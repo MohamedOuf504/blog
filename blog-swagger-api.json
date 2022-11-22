@@ -1,23 +1,30 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-        "version": "1.0.0",
-        "title": "deal app  ",
-        "description": "Task For deal app  "
-    },
-    "tags": [
-        {
-            "name": "User",
-            "description": "User endpoints"
-        },
-        {},
-        {},
-        {}
-    ],
-    "paths": {
-        "/user/signup": {
+	"openapi": "3.0.0",
+	"info": {
+		"version": "1.0.0",
+		"title": "deal app  ",
+		"description": "Task For deal app  "
+	},
+	"tags": [
+		{
+			"name": "User",
+			"description": "User endpoints"
+		},
+		{
+			"name": "Post",
+			"description": "Post endpoints"
+		},
+		{
+			"name": "Admin",
+			"description": "Admin endpoints"
+		}
+	],
+	"paths": {
+		"/user/signup": {
 			"post": {
-				"tags": ["Users"],
+				"tags": [
+					"User"
+				],
 				"summary": "Signup endpoint",
 				"requestBody": {
 					"description": "user signup data",
@@ -27,7 +34,6 @@
 							"schema": {
 								"type": "object",
 								"properties": {
-									
 									"email": {
 										"type": "string",
 										"example": "john@john.com"
@@ -64,22 +70,18 @@
 										"data": {
 											"type": "object",
 											"properties": {
-												
 												"email": {
 													"type": "string",
 													"example": "mark@mark.com"
 												},
-												
 												"id": {
 													"type": "string",
 													"example": "626a8bd6c8f8c416c332a906"
 												},
 												"role": {
 													"type": "string",
-													"example":"user"
+													"example": "user"
 												}
-
-											
 											}
 										}
 									}
@@ -95,7 +97,9 @@
 		},
 		"/user/login": {
 			"post": {
-				"tags": ["Users"],
+				"tags": [
+					"User"
+				],
 				"summary": "Login endpoint",
 				"requestBody": {
 					"description": "user login data",
@@ -141,12 +145,10 @@
 													"type": "string",
 													"example": "user"
 												},
-												
 												"email": {
 													"type": "string",
 													"example": "mark@mark.com"
 												},
-												
 												"id": {
 													"type": "string",
 													"example": "626a8bd6c8f8c416c332a906"
@@ -163,10 +165,251 @@
 					}
 				}
 			}
+		},
+		"/posts": {
+			"post": {
+				"tags": [
+					"Post"
+				],
+				"summary": "Create endpoint",
+				"requestBody": {
+					"description": "Create Post",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"title": {
+										"type": "string",
+										"example": "Back end "
+									},
+									"body": {
+										"type": "string",
+										"example": "Node js"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "created"
+										},
+										"post": {
+											"type": "object",
+											"properties": {
+												"title": {
+													"type": "string",
+													"example": "Back end "
+												},
+												"body": {
+													"type": "string",
+													"example": "Node js"
+												},
+												"_id": {
+													"type": "string",
+													"example": "626a8bd6c8f8c416c332a906"
+												},
+												"createdBy": {
+													"type": "string",
+													"example": "626a8bd6c8f8c416c332a906"
+												},
+												"createdAt": {
+													"type": "Date",
+													"example": "2022-11-20T21:29:27.651Z"
+												},
+												"updatedAt": {
+													"type": "Date",
+													"example": "2022-11-20T21:29:27.651Z"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request. "
+					}
+				}
+			}
+		},
+		"/posts/": {
+			"get": {
+				"tags": [
+					"Post"
+				],
+				"summary": "Get Posts endpoint",
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"schema": {
+							"type": "integer"
+						},
+						"description": "The number of items to skip before starting to collect the result set"
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"schema": {
+							"type": "integer"
+						},
+						"description": "The number of items to retrun"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "created"
+										},
+										"post": {
+											"type": "object",
+											"properties": {
+												"data": {
+													"type": "Array",
+													"example": [
+														{
+															"_id": "637a9c09baf73a08e49076f6",
+															"title": "node js ",
+															"body": "Back-end",
+															"status": "PENDING",
+															"createdBy": {
+																"_id": "637823f07aac5bc6381dc947",
+																"email": "mohamedOuf501@gmail.com",
+																"role": "ADMIN"
+															},
+															"createdAt": "2022-11-20T21:28:41.215Z",
+															"updatedAt": "2022-11-20T21:28:41.215Z",
+															"interactions": []
+														}
+													]
+												},
+												"total": {
+													"type": "integer",
+													"example": 1
+												},
+												"page": {
+													"type": "integer",
+													"example": 1
+												},
+												"limit": {
+													"type": "integer",
+													"example": 1
+												},
+												"totalPages": {
+													"type": "integer",
+													"example": 1
+												},
+												"hasNextPage": {
+													"type": "boolean",
+													"example": true
+												},
+												"hasPrevPage": {
+													"type": "boolean",
+													"example": false
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request. "
+					}
+				}
+			}
+		},
+		"/admin/statistics": {
+			"get": {
+				"tags": [
+					"Admin"
+				],
+				"summary": "Get statistics endpoint",
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"post": {
+											"type": "object",
+											"properties": {
+												"allPosts": {
+													"type": "integer",
+													"example": 1
+												},
+												"approvedPosts": {
+													"type": "integer",
+													"example": 1
+												},
+												"pendingPosts": {
+													"type": "integer",
+													"example": 1
+												},
+												"rejectedPosts": {
+													"type": "integer",
+													"example": 1
+												}
+											}
+										},
+										"interactions": {
+											"type": "object",
+											"properties": {
+												"commentsOnly": {
+													"type": "integer",
+													"example": 1
+												},
+												"postsOnly": {
+													"type": "integer",
+													"example": 1
+												},
+												"allPostsAndComments": {
+													"type": "integer",
+													"example": 1
+												}
+											}
+										},
+										"comments": {
+											"type": "integer",
+											"example": 1
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request. "
+					}
+				}
+			}
 		}
-    },
-    "components": {
-        "schemas": {
+	},
+	"components": {
+		"schemas": {
 			"User": {
 				"type": "object",
 				"properties": {
@@ -182,14 +425,43 @@
 						"type": "string",
 						"example": "john_passowrd"
 					}
-
 				}
-			}}
-    },
-    "servers": [
-        {
-            "description": "Try it Now ",
-            "url": "http://localhost:3000/api/v1/"
-        }
-    ]
+			},
+			"Post": {
+				"type": "object",
+				"properties": {
+					"title": {
+						"type": "string",
+						"example": "Back end "
+					},
+					"body": {
+						"type": "string",
+						"example": "Node js"
+					},
+					"_id": {
+						"type": "string",
+						"example": "626a8bd6c8f8c416c332a906"
+					},
+					"createdBy": {
+						"type": "string",
+						"example": "626a8bd6c8f8c416c332a906"
+					},
+					"createdAt": {
+						"type": "Date",
+						"example": "2022-11-20T21:29:27.651Z"
+					},
+					"updatedAt": {
+						"type": "Date",
+						"example": "2022-11-20T21:29:27.651Z"
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"description": "Try it Now ",
+			"url": "http://localhost:3000/api/v1/"
+		}
+	]
 }

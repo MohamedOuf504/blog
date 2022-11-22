@@ -1,3 +1,4 @@
+const config = require("../../../config/config");
 const AppError = require("../../utils/appError");
 const catchAsync = require("../../utils/catchAsync");
 const { Post } = require("./post.model");
@@ -16,7 +17,15 @@ const CreatePost = catchAsync(async (req, res, next) => {
 })
 
 const getPosts = catchAsync(async (req, res, next) => {
+
     let isAdmin = false
+    let hasNextPage = false
+    let hasPrevPage = false
+    const defaultValue = 1
+    const limit = parseInt(req.query.limit) || parseInt(config.limit)
+    const page = parseInt(req.query.page) || defaultValue
+    const skip = ((page - defaultValue) * limit) || parseInt(config.skip)
+
     if (req.user.role == "ADMIN") {
         isAdmin = true
     }
@@ -63,30 +72,13 @@ const getPosts = catchAsync(async (req, res, next) => {
                             }
                         }
                     },
-                    {
-                        $project: {
-                            "interactions": {
-                                "$arrayToObject": {
-                                    "$map": {
-                                        "input": "$interactions",
-                                        "as": "el",
-                                        "in": {
-                                            "k": "$$el._id",
-                                            "v": "$$el"
-                                        }
-                                    }
-                                }
-                            }}
-                    }
-                    
-
                 ]
             },
         },
         {
-            $skip: 0
+            $skip: skip
         }, {
-            $limit: 100
+            $limit: limit
         }, {
             $sort: { "updatedAt": -1 }
         }
@@ -102,8 +94,30 @@ const getPosts = catchAsync(async (req, res, next) => {
 
     ])
 
+    if (!posts.length) return next(new AppError('No found ', 404))
 
-    res.send(posts)
+    const total = await Post.countDocuments({
+
+        status: isAdmin ? { $in: ["APPROVED", "PENDING", 'REJECTED'] } : { $eq: 'APPROVED' }
+
+    })
+
+    const totalPages = Math.ceil(total / limit)
+
+    if (page < totalPages) { hasNextPage = true }
+    if (page > defaultValue) { hasPrevPage = true }
+
+    res.status(200).json({
+        data: posts,
+        total,
+        page,
+        limit,
+        totalPages,
+        hasNextPage,
+        hasPrevPage
+
+
+    })
 
 })
 
@@ -111,3 +125,5 @@ module.exports = {
     CreatePost,
     getPosts
 }
+
+

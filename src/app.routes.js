@@ -7,17 +7,18 @@ const authController = require("./modules/User/auth.Controller");
 const errorHandler = require("./middlewares/errorHandler");
 const { userRouter } = require("./modules/User/user.Routes");
 const { postRouter } = require("./modules/Post/post.Routes");
+const { statistics } = require('./modules/User/admin.Controller');
 
 
-app.use('/api/v1/user', userRouter)
+app.use(userRouter)
 
-// app.use(authController.protect);
+app.use(postRouter)
 
-app.use('/api/v1/posts', postRouter)
+app.get('/admin/statistics/', authController.protect, authController.restrictTo('ADMIN'), statistics)
 
-// app.use(authController.restrictTo('ADMIN'));
 
-app.get('/api/v1/health', (req, res) => {
+app.get('/api/v1/health', authController.protect, authController.restrictTo('ADMIN'), (req, res) => {
+
     const uptime = timeFormat(process.uptime().toString());
     const { ip, url, hostname: host, headers } = req;
 
